@@ -61,19 +61,12 @@ export const useThemingParameters = defineRule({
     ],
   },
   create(context) {
-    const [options = {}] = context.options as unknown as [
-      UseThemingParametersOptions | undefined,
-    ];
-    const importSource =
-      options.importSource ?? "@ui5/webcomponents-react-base/ThemingParameters";
+    const [options = {}] = context.options as unknown as [UseThemingParametersOptions | undefined];
+    const importSource = options.importSource ?? "@ui5/webcomponents-react-base/ThemingParameters";
     const objectName = options.objectName ?? "ThemingParameters";
     let themingParametersImported = false;
 
-    const checkStringValue = (
-      node: Ranged,
-      replacementRange: [number, number],
-      value: string,
-    ) => {
+    const checkStringValue = (node: Ranged, replacementRange: [number, number], value: string) => {
       const match = SAP_VAR_PATTERN.exec(value);
       if (!match) return;
       const replacement = cssVarToReplacement(match[1]!, objectName);
@@ -112,9 +105,11 @@ export const useThemingParameters = defineRule({
       Program(node) {
         for (const statement of node.body) {
           if (statement.type !== "ImportDeclaration") continue;
-          const specifiers = (statement as unknown as {
-            specifiers: Array<{ type: string; imported?: { name?: string; value?: string } }>;
-          }).specifiers;
+          const specifiers = (
+            statement as unknown as {
+              specifiers: Array<{ type: string; imported?: { name?: string; value?: string } }>;
+            }
+          ).specifiers;
           if (!importSourceMatches(statement.source, importSource)) continue;
           for (const specifier of specifiers) {
             if (
