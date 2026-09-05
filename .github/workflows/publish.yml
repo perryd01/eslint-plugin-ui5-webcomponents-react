@@ -99,6 +99,7 @@ jobs:
   publish:
     needs: pack
     runs-on: ubuntu-latest
+    environment: production
     permissions:
       contents: write # to check out repo (actions/checkout) and to create releases (changesets/action/publish)
       id-token: write # for trusted publishing (changesets/action/publish)
