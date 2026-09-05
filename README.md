@@ -4,8 +4,8 @@ ESLint-compatible plugin with rules for [@ui5/webcomponents-react](https://githu
 
 ## Rules
 
-| Rule                                     | Description                                                                                  | Fixable |
-| ---------------------------------------- | -------------------------------------------------------------------------------------------- | ------- |
+| Rule                                             | Description                                                                                                        | Fixable |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ------- |
 | `ui5-webcomponents-react/use-theming-parameters` | Flags inline `var(--sap...)` CSS variable strings and replaces them with the type-safe `ThemingParameters` object. | Yes     |
 
 ## Installation
@@ -37,8 +37,8 @@ export default defineConfig({
 {
   "jsPlugins": ["eslint-plugin-ui5-webcomponents-react"],
   "rules": {
-    "ui5-webcomponents-react/use-theming-parameters": "warn"
-  }
+    "ui5-webcomponents-react/use-theming-parameters": "warn",
+  },
 }
 ```
 
@@ -48,8 +48,8 @@ The rule name is derived from the plugin's `meta.name` (`eslint-plugin-` prefix 
 {
   "jsPlugins": [{ "name": "ui5", "specifier": "eslint-plugin-ui5-webcomponents-react" }],
   "rules": {
-    "ui5/use-theming-parameters": "warn"
-  }
+    "ui5/use-theming-parameters": "warn",
+  },
 }
 ```
 
@@ -81,25 +81,26 @@ Or with the recommended preset:
 // eslint.config.js
 import ui5WebComponentsReact from "eslint-plugin-ui5-webcomponents-react";
 
-export default [
-  ui5WebComponentsReact.configs.recommended,
-];
+export default [ui5WebComponentsReact.configs.recommended];
 ```
 
 ## Rule options
 
 `use-theming-parameters` accepts an optional options object:
 
-| Option         | Default                                                          | Description                                   |
-| -------------- | ---------------------------------------------------------------- | --------------------------------------------- |
-| `importSource` | `@ui5/webcomponents-react-base/ThemingParameters`                | Module that exports the theming parameters.   |
-| `objectName`   | `ThemingParameters`                                              | Identifier used for the replacement and import. |
+| Option         | Default                                           | Description                                     |
+| -------------- | ------------------------------------------------- | ----------------------------------------------- |
+| `importSource` | `@ui5/webcomponents-react-base/ThemingParameters` | Module that exports the theming parameters.     |
+| `objectName`   | `ThemingParameters`                               | Identifier used for the replacement and import. |
 
 ```jsonc
 {
   "rules": {
-    "ui5-webcomponents-react/use-theming-parameters": ["warn", { "importSource": "@ui5/webcomponents-react-base", "objectName": "Theme" }]
-  }
+    "ui5-webcomponents-react/use-theming-parameters": [
+      "warn",
+      { "importSource": "@ui5/webcomponents-react-base", "objectName": "Theme" },
+    ],
+  },
 }
 ```
 
