@@ -36,16 +36,16 @@
     "format:check": "oxfmt --check ."
   },
   "dependencies": {
-    "@oxlint/plugins": "^1.81.0"
+    "@oxlint/plugins": "1.81.0"
   },
   "devDependencies": {
     "@changesets/cli": "3.0.1",
     "@types/bun": "latest",
-    "@types/eslint": "^9.6.1",
-    "eslint": "^9.0.0",
+    "@types/eslint": "9.6.1",
+    "eslint": "9.39.5",
     "oxfmt": "0.66.0",
-    "oxlint": "^1.81.0",
-    "typescript": "^5"
+    "oxlint": "1.81.0",
+    "typescript": "7.0.2"
   },
   "peerDependencies": {
     "eslint": "^9.0.0 || ^10.10.0"
