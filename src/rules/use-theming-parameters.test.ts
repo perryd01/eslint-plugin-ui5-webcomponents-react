@@ -33,66 +33,34 @@ describe("use-theming-parameters", () => {
       invalid: [
         {
           code: `<div style={{ color: 'var(--sapNegativeColor)' }} />;`,
-          errors: [
-            {
-              messageId: "useThemingParameters",
-              suggestions: [
-                {
-                  messageId: "replaceWithThemingParameter",
-                  output: `<div style={{ color: ThemingParameters.sapNegativeColor }} />;`,
-                },
-                {
-                  messageId: "replaceAndImportThemingParameter",
-                  output: `import { ThemingParameters } from '@ui5/webcomponents-react-base/ThemingParameters';\n<div style={{ color: ThemingParameters.sapNegativeColor }} />;`,
-                },
-              ],
-            },
-          ],
+          errors: [{ messageId: "useThemingParameters" }],
+          output: `import { ThemingParameters } from '@ui5/webcomponents-react-base/ThemingParameters';\n<div style={{ color: ThemingParameters.sapNegativeColor }} />;`,
         },
       ],
     },
   );
 
-  ruleTester.run("flags multiple occurrences in one style prop", useThemingParameters as never, {
+  ruleTester.run("fixes multiple occurrences in one style prop", useThemingParameters as never, {
     valid: [],
     invalid: [
       {
-        code: `<span style={{ color: 'var(--sapNegativeColor)', fontSize: 'var(--sapFontLargeSize)' }}>My Text</span>;`,
+        code: `import { ThemingParameters } from '@ui5/webcomponents-react-base/ThemingParameters';\n<span style={{ color: 'var(--sapNegativeColor)', fontSize: 'var(--sapFontLargeSize)' }}>My Text</span>;`,
         errors: [
           {
             messageId: "useThemingParameters",
             data: { replacement: "ThemingParameters.sapNegativeColor" },
-            suggestions: [
-              {
-                messageId: "replaceWithThemingParameter",
-                output: `<span style={{ color: ThemingParameters.sapNegativeColor, fontSize: 'var(--sapFontLargeSize)' }}>My Text</span>;`,
-              },
-              {
-                messageId: "replaceAndImportThemingParameter",
-                output: `import { ThemingParameters } from '@ui5/webcomponents-react-base/ThemingParameters';\n<span style={{ color: ThemingParameters.sapNegativeColor, fontSize: 'var(--sapFontLargeSize)' }}>My Text</span>;`,
-              },
-            ],
           },
           {
             messageId: "useThemingParameters",
             data: { replacement: "ThemingParameters.sapFontLargeSize" },
-            suggestions: [
-              {
-                messageId: "replaceWithThemingParameter",
-                output: `<span style={{ color: 'var(--sapNegativeColor)', fontSize: ThemingParameters.sapFontLargeSize }}>My Text</span>;`,
-              },
-              {
-                messageId: "replaceAndImportThemingParameter",
-                output: `import { ThemingParameters } from '@ui5/webcomponents-react-base/ThemingParameters';\n<span style={{ color: 'var(--sapNegativeColor)', fontSize: ThemingParameters.sapFontLargeSize }}>My Text</span>;`,
-              },
-            ],
           },
         ],
+        output: `import { ThemingParameters } from '@ui5/webcomponents-react-base/ThemingParameters';\n<span style={{ color: ThemingParameters.sapNegativeColor, fontSize: ThemingParameters.sapFontLargeSize }}>My Text</span>;`,
       },
     ],
   });
 
-  ruleTester.run("flags variables in styles object outside JSX", useThemingParameters as never, {
+  ruleTester.run("fixes variables in styles object outside JSX", useThemingParameters as never, {
     valid: [],
     invalid: [
       {
@@ -101,23 +69,14 @@ describe("use-theming-parameters", () => {
           {
             messageId: "useThemingParameters",
             data: { replacement: "ThemingParameters.sapBackgroundColor" },
-            suggestions: [
-              {
-                messageId: "replaceWithThemingParameter",
-                output: `const styles = { background: ThemingParameters.sapBackgroundColor };`,
-              },
-              {
-                messageId: "replaceAndImportThemingParameter",
-                output: `import { ThemingParameters } from '@ui5/webcomponents-react-base/ThemingParameters';\nconst styles = { background: ThemingParameters.sapBackgroundColor };`,
-              },
-            ],
           },
         ],
+        output: `import { ThemingParameters } from '@ui5/webcomponents-react-base/ThemingParameters';\nconst styles = { background: ThemingParameters.sapBackgroundColor };`,
       },
     ],
   });
 
-  ruleTester.run("flags template literal without interpolation", useThemingParameters as never, {
+  ruleTester.run("fixes template literal without interpolation", useThemingParameters as never, {
     valid: [],
     invalid: [
       {
@@ -126,18 +85,9 @@ describe("use-theming-parameters", () => {
           {
             messageId: "useThemingParameters",
             data: { replacement: "ThemingParameters.sapFontLargeSize" },
-            suggestions: [
-              {
-                messageId: "replaceWithThemingParameter",
-                output: "const x = ThemingParameters.sapFontLargeSize;",
-              },
-              {
-                messageId: "replaceAndImportThemingParameter",
-                output: `import { ThemingParameters } from '@ui5/webcomponents-react-base/ThemingParameters';\nconst x = ThemingParameters.sapFontLargeSize;`,
-              },
-            ],
           },
         ],
+        output: `import { ThemingParameters } from '@ui5/webcomponents-react-base/ThemingParameters';\nconst x = ThemingParameters.sapFontLargeSize;`,
       },
     ],
   });
@@ -151,23 +101,14 @@ describe("use-theming-parameters", () => {
           {
             messageId: "useThemingParameters",
             data: { replacement: 'ThemingParameters["sapFontUrl_SAP-icons_woff2"]' },
-            suggestions: [
-              {
-                messageId: "replaceWithThemingParameter",
-                output: `const x = ThemingParameters["sapFontUrl_SAP-icons_woff2"];`,
-              },
-              {
-                messageId: "replaceAndImportThemingParameter",
-                output: `import { ThemingParameters } from '@ui5/webcomponents-react-base/ThemingParameters';\nconst x = ThemingParameters["sapFontUrl_SAP-icons_woff2"];`,
-              },
-            ],
           },
         ],
+        output: `import { ThemingParameters } from '@ui5/webcomponents-react-base/ThemingParameters';\nconst x = ThemingParameters["sapFontUrl_SAP-icons_woff2"];`,
       },
     ],
   });
 
-  ruleTester.run("only offers import suggestion when not imported", useThemingParameters as never, {
+  ruleTester.run("does not add an import when already imported", useThemingParameters as never, {
     valid: [],
     invalid: [
       {
@@ -175,14 +116,10 @@ describe("use-theming-parameters", () => {
         errors: [
           {
             messageId: "useThemingParameters",
-            suggestions: [
-              {
-                messageId: "replaceWithThemingParameter",
-                output: `import { ThemingParameters } from '@ui5/webcomponents-react-base/ThemingParameters';\nconst x = ThemingParameters.sapNegativeColor;`,
-              },
-            ],
+            data: { replacement: "ThemingParameters.sapNegativeColor" },
           },
         ],
+        output: `import { ThemingParameters } from '@ui5/webcomponents-react-base/ThemingParameters';\nconst x = ThemingParameters.sapNegativeColor;`,
       },
     ],
   });
@@ -197,18 +134,9 @@ describe("use-theming-parameters", () => {
           {
             messageId: "useThemingParameters",
             data: { replacement: "Theme.sapNegativeColor" },
-            suggestions: [
-              {
-                messageId: "replaceWithThemingParameter",
-                output: "const x = Theme.sapNegativeColor;",
-              },
-              {
-                messageId: "replaceAndImportThemingParameter",
-                output: `import { Theme } from '@ui5/webcomponents-react-base';\nconst x = Theme.sapNegativeColor;`,
-              },
-            ],
           },
         ],
+        output: `import { Theme } from '@ui5/webcomponents-react-base';\nconst x = Theme.sapNegativeColor;`,
       },
     ],
   });
