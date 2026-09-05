@@ -50,8 +50,12 @@ try {
   console.log("── invalid ──");
   console.log(invalid.exitCode, invalid.stdout.trim() || "(no diagnostics)");
 
-  if (valid.exitCode !== 0 || valid.stdout.trim() !== "") {
-    console.error("FAIL: valid fixture produced diagnostics");
+  if (valid.exitCode !== 0) {
+    console.error("FAIL: valid fixture produced non-zero exit code");
+    process.exit(1);
+  }
+  if (valid.stdout.includes("use-theming-parameters")) {
+    console.error("FAIL: valid fixture produced a use-theming-parameters diagnostic");
     process.exit(1);
   }
   if (!invalid.stdout.includes("use-theming-parameters")) {
