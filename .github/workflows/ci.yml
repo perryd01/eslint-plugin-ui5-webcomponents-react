@@ -6,8 +6,8 @@ on:
   pull_request:
     paths-ignore:
       - docs/**
-      - '*.md'
-      - '**/*.md'
+      - "*.md"
+      - "**/*.md"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
