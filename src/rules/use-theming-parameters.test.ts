@@ -18,36 +18,40 @@ const ruleTester = new RuleTester({
 });
 
 describe("use-theming-parameters", () => {
-  ruleTester.run("flags inline sap CSS variables in JSX style props", useThemingParameters as never, {
-    valid: [
-      `<div style={{ color: ThemingParameters.sapNegativeColor }} />;`,
-      `<div style={{ color: 'red' }} />;`,
-      `const x = 'var(--foo)';`,
-      `const x = 'var(--sapNegativeColor, red)';`,
-      "const x = `var(--sapNegativeColor, ${fallback})`;",
-      `const styles = { color: 'var(--notSapSomething)' };`,
-    ],
-    invalid: [
-      {
-        code: `<div style={{ color: 'var(--sapNegativeColor)' }} />;`,
-        errors: [
-          {
-            messageId: "useThemingParameters",
-            suggestions: [
-              {
-                messageId: "replaceWithThemingParameter",
-                output: `<div style={{ color: ThemingParameters.sapNegativeColor }} />;`,
-              },
-              {
-                messageId: "replaceAndImportThemingParameter",
-                output: `import { ThemingParameters } from '@ui5/webcomponents-react-base/ThemingParameters';\n<div style={{ color: ThemingParameters.sapNegativeColor }} />;`,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  });
+  ruleTester.run(
+    "flags inline sap CSS variables in JSX style props",
+    useThemingParameters as never,
+    {
+      valid: [
+        `<div style={{ color: ThemingParameters.sapNegativeColor }} />;`,
+        `<div style={{ color: 'red' }} />;`,
+        `const x = 'var(--foo)';`,
+        `const x = 'var(--sapNegativeColor, red)';`,
+        "const x = `var(--sapNegativeColor, ${fallback})`;",
+        `const styles = { color: 'var(--notSapSomething)' };`,
+      ],
+      invalid: [
+        {
+          code: `<div style={{ color: 'var(--sapNegativeColor)' }} />;`,
+          errors: [
+            {
+              messageId: "useThemingParameters",
+              suggestions: [
+                {
+                  messageId: "replaceWithThemingParameter",
+                  output: `<div style={{ color: ThemingParameters.sapNegativeColor }} />;`,
+                },
+                {
+                  messageId: "replaceAndImportThemingParameter",
+                  output: `import { ThemingParameters } from '@ui5/webcomponents-react-base/ThemingParameters';\n<div style={{ color: ThemingParameters.sapNegativeColor }} />;`,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  );
 
   ruleTester.run("flags multiple occurrences in one style prop", useThemingParameters as never, {
     valid: [],
