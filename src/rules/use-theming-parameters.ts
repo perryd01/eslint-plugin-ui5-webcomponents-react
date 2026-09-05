@@ -1,5 +1,5 @@
 import { defineRule } from "@oxlint/plugins";
-import type { Ranged, Suggestion } from "@oxlint/plugins";
+import type { Ranged } from "@oxlint/plugins";
 
 export interface UseThemingParametersOptions {
   importSource?: string;
@@ -45,13 +45,10 @@ export const useThemingParameters = defineRule({
         additionalProperties: false,
       },
     ],
-    hasSuggestions: true,
+    fixable: "code",
     messages: {
       useThemingParameters:
         "Avoid inline CSS variable strings. Use the type-safe ThemingParameters object instead: {{ replacement }}.",
-      replaceWithThemingParameter: "Replace with `{{ replacement }}`.",
-      replaceAndImportThemingParameter:
-        "Replace with `{{ replacement }}` and import ThemingParameters.",
     },
     defaultOptions: [
       {
@@ -65,39 +62,29 @@ export const useThemingParameters = defineRule({
     const importSource = options.importSource ?? "@ui5/webcomponents-react-base/ThemingParameters";
     const objectName = options.objectName ?? "ThemingParameters";
     let themingParametersImported = false;
+    let importFixAdded = false;
 
     const checkStringValue = (node: Ranged, replacementRange: [number, number], value: string) => {
       const match = SAP_VAR_PATTERN.exec(value);
       if (!match) return;
       const replacement = cssVarToReplacement(match[1]!, objectName);
 
-      const suggestions: Suggestion[] = [
-        {
-          messageId: "replaceWithThemingParameter",
-          data: { replacement },
-          fix: (fixer) => fixer.replaceTextRange(replacementRange, replacement),
-        },
-      ];
-
-      if (!themingParametersImported) {
-        suggestions.push({
-          messageId: "replaceAndImportThemingParameter",
-          data: { replacement },
-          fix: (fixer) => [
-            fixer.replaceTextRange(replacementRange, replacement),
-            fixer.insertTextBeforeRange(
-              [0, 0],
-              `import { ${objectName} } from '${importSource}';\n`,
-            ),
-          ],
-        });
-      }
-
       context.report({
         node,
         messageId: "useThemingParameters",
         data: { replacement },
-        suggest: suggestions,
+        fix: (fixer) => {
+          const replace = fixer.replaceTextRange(replacementRange, replacement);
+          if (themingParametersImported || importFixAdded) return replace;
+          importFixAdded = true;
+          return [
+            replace,
+            fixer.insertTextBeforeRange(
+              [0, 0],
+              `import { ${objectName} } from '${importSource}';\n`,
+            ),
+          ];
+        },
       });
     };
 
