@@ -32,7 +32,8 @@
     "test:oxlint": "bun run scripts/verify-oxlint.ts",
     "prepublishOnly": "bun run typecheck && bun run build && bun test",
     "lint": "oxlint",
-    "format": "oxfmt"
+    "format": "oxfmt",
+    "format:check": "oxfmt --check ."
   },
   "dependencies": {
     "@oxlint/plugins": "^1.81.0"
@@ -41,6 +42,7 @@
     "@types/bun": "latest",
     "@types/eslint": "^9.6.1",
     "eslint": "^9.0.0",
+    "oxfmt": "0.66.0",
     "oxlint": "^1.81.0",
     "typescript": "^5"
   },
