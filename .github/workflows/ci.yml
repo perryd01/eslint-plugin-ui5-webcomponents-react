@@ -35,7 +35,7 @@ jobs:
         run: bun run lint
 
       - name: Format
-        run: bunx oxfmt --check .
+        run: bun run format:check
 
       - name: Typecheck
         run: bun run typecheck
