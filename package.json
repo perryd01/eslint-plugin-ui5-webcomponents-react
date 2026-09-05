@@ -1,0 +1,58 @@
+{
+  "name": "eslint-plugin-ui5-webcomponents-react",
+  "version": "0.1.0",
+  "description": "ESLint / Oxlint plugin for @ui5/webcomponents-react",
+  "keywords": [
+    "eslint",
+    "eslint-plugin",
+    "oxlint",
+    "react",
+    "ui5",
+    "ui5-webcomponents"
+  ],
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "build": "bun run scripts/build.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "test:oxlint": "bun run scripts/verify-oxlint.ts",
+    "prepublishOnly": "bun run typecheck && bun run build && bun test",
+    "lint": "oxlint",
+    "format": "oxfmt"
+  },
+  "dependencies": {
+    "@oxlint/plugins": "^1.81.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/eslint": "^9.6.1",
+    "eslint": "^9.0.0",
+    "oxlint": "^1.81.0",
+    "typescript": "^5"
+  },
+  "peerDependencies": {
+    "eslint": "^9.0.0 || ^10.10.0"
+  },
+  "peerDependenciesMeta": {
+    "eslint": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  }
+}
