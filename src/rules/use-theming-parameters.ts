@@ -62,6 +62,7 @@ export const useThemingParameters = defineRule({
     const importSource = options.importSource ?? "@ui5/webcomponents-react-base/ThemingParameters";
     const objectName = options.objectName ?? "ThemingParameters";
     let themingParametersImported = false;
+    let importFixAdded = false;
 
     const checkStringValue = (node: Ranged, replacementRange: [number, number], value: string) => {
       const match = SAP_VAR_PATTERN.exec(value);
@@ -74,7 +75,8 @@ export const useThemingParameters = defineRule({
         data: { replacement },
         fix: (fixer) => {
           const replace = fixer.replaceTextRange(replacementRange, replacement);
-          if (themingParametersImported) return replace;
+          if (themingParametersImported || importFixAdded) return replace;
+          importFixAdded = true;
           return [
             replace,
             fixer.insertTextBeforeRange(
