@@ -11,6 +11,10 @@
     "ui5-webcomponents"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/perryd01/eslint-plugin-ui5-webcomponents-react.git"
+  },
   "files": [
     "dist"
   ],
